@@ -1,0 +1,3 @@
+---
+repository: https://github.com/sign-language-translation-tools/sltt.git
+sltt: /var/www/sltt

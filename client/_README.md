@@ -1,3 +1,7 @@
+# Setup on server
+
+See server/ansible/_README.md
+
 # To run (not in debug mode)
 
     yarn install      [if this has not already been done]
@@ -27,7 +31,7 @@ To turn on debug output in browser console window
 # View server log (real time)
 
     ssl to server
-    PM2 logs
+    pm2 logs
 
 # Run client side unittests
 

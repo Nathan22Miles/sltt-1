@@ -2,9 +2,8 @@
 - hosts: _sltt
   become: true
   become_method: sudo
-  vars:
-    repository: https://github.com/sign-language-translation-tools/sltt.git
-    sltt: /var/www/sltt
+  vars_files:
+    - common_vars.yml
 
   tasks:
     - name: Stop the service

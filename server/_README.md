@@ -1,3 +1,7 @@
+# Setup
+
+See server/ansible/_README.md
+
 # Environment Variables
 
 SLTT_PROJECTS_DIR = Directory to containing PouchDB databases for projects
@@ -10,43 +14,31 @@ SLTT_UPLOADER_ACCESS_KEY = access key for S3 bucket containing uploaded videos
 SLTT_UPLOADER_SECRET_ACCESS_KEY = secret access key for S3 bucket containing uploaded videos
 SLTT_BUCKET = S3 bucket name
 
-On the development machine these values are kept in the sltt_environment file
-of the developers home directory.
 
-TODO Investigate using git-crypt to keep these encoded but with the respository
+# Debugging
 
-# Init new project
+Launch the 'Server' config in VSCode.
 
-node initProject.js ASLVtest 
-    add -r at end to delete!!! all existing project data
+The file "${workspaceFolder}/../../sltt_environment" must contain definitions for all the variables found
+in secrets.yml.
 
-# Express Internals
+## View nginx access and error logs
 
-    [ServerRespone](nodejs.org/api/http.html#http_class_http_serverresponse)
-        * EventEmitter 
-          ** close (connection terminated before .end() was called)
-        * end([date],[encoding],[callback])
-        * statusCode, statusMessage
-    [ClientRequest]
-        * method
-        * originalUrl
+    cd /var/www/sltt/log
 
-# Docker
+## pm2
 
-TODO Decide if we should run sltt as a docker image.
+Pm2 is used to start the server code and restart it as necessary
 
-Pros
-* Could run same image on development machine and server
-* Might make it easier to separate development, qa, and productions servers
-* Keeping images would provide a quick way to roll back painful changes
+    pm2 ls      - should see sltt process running
+    pm2 logs
+    pm2 restart sltt.json
+    pm2 stop sltt
+    pm2 delete sltt
+    pm2 save    - cause current config to be restarted on reboot
+    pm2 flush   - clear logs
 
-Cons
-* More complicated than using PM2? One more technology to juggle
-
-    docker build -t nmiles/sltt_server .
-    docker run -p 3001:3001 nmiles/sltt_server
-
-# Access Fauton
+## Access Fauton?
 
 TODO Figure out if we could use this as a debugging aid
 
@@ -55,4 +47,28 @@ TODO Figure out if we could use this as a debugging aid
     https://github.com/pouchdb/pouchdb-server
 
     http://localhost:5984/db
+
+
+## Notes
+
+The code that sends the HTTP messages relating to the changes function is here.
+There are currently patches for this in the patches directory.
+
+    express-pouchdb/lib/routes/changes.js
+
+## Express Internals
+
+    [ServerRespone](nodejs.org/api/http.html#http_class_http_serverresponse)
+        * EventEmitter 
+          ** close (connection terminated before .end() was called)
+        * end([date],[encoding],[callback])
+        * statusCode, statusMessage
+        
+    [ClientRequest]
+        * method
+        * originalUrl
+
+
+
+
 
